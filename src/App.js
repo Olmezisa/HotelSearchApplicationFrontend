@@ -132,8 +132,19 @@ export default function App() {
     }
   };
 
-  const handleBackToSearch = () => { setView('search'); setError(null); };
-  const handleBackToResults = () => { setView('results'); setError(null); };
+  const handleBackToSearch = () => { 
+    setView('search'); 
+    setError(null); 
+    setSearchResults(null);
+    setSelectedHotel(null);
+  };
+  
+  const handleBackToResults = () => { 
+    setView('results'); 
+    setError(null); 
+    setSelectedHotel(null);
+  };
+  
   const getNationalityName = () => nationalities.find(n => n.id === selectedNationality)?.name || selectedNationality;
   const getCurrencyName = () => currencies.find(c => c.code === selectedCurrency)?.name || selectedCurrency;
 
@@ -146,7 +157,16 @@ export default function App() {
             <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">{error}</h3>
-              {view !== 'search' && <button onClick={view === 'results' ? handleBackToSearch : handleBackToResults} className="text-sm text-red-700 underline hover:text-red-600">Geri dön</button>}
+              <div className="mt-2 space-x-4">
+                <button onClick={handleBackToSearch} className="text-sm text-red-700 underline hover:text-red-600">
+                  Ana Sayfaya Dön
+                </button>
+                {view === 'detail' && (
+                  <button onClick={handleBackToResults} className="text-sm text-red-700 underline hover:text-red-600">
+                    Sonuçlara Dön
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -182,10 +202,15 @@ export default function App() {
       <header className="bg-[#1f2937] shadow-md z-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
+            {/* Logo - Tıklanabilir */}
+            <button 
+              onClick={handleBackToSearch}
+              className="flex items-center hover:opacity-80 transition-opacity duration-200"
+            >
               <Hotel className="h-8 w-8 text-yellow-400" />
               <span className="ml-2 text-xl font-bold">Voyago</span>
-            </div>
+            </button>
+            
             <div className="flex items-center space-x-4">
               <div className="relative" ref={natRef}>
                 <button onClick={() => setShowNatDropdown(!showNatDropdown)} className="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-700">
